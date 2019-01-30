@@ -5,16 +5,6 @@ import {ChangeData} from "./components/ChangeData";
 import data1 from './data/packageSmall';
 import data2 from './data/packageBig';
 
-// импортируем данные для загрузки
-// const DATA_URL1 = 'http://www.filltext.com/?rows=32&id={number|10000000}&firstName={firstName}&lastName={lastName}&email={email}&phone={phone|(xxx)xxx-xx-xx}&address={addressObject}&description={lorem|32}';
-// const DATA_URL2 = 'http://www.filltext.com/?rows=1000&id={number|100000}&firstName={firstName}&delay=3&lastName={lastName}&email={email}&phone={phone|(xxx)xxx-xx-xx}&address={addressObject}&description={lorem|32}';
-
-
-// Файлы для тестирование оффлайн
-// const DATA_URL1 = './data/packageSmall.json';
-// const DATA_URL2 = './data/packageBig.json';
-
-
 
 class App extends Component {
     constructor(props) {
@@ -53,10 +43,7 @@ class App extends Component {
         }
         //Включаем индикатор загрузки
         document.querySelector("body").setAttribute('class','load');
-        // Загружаем данные
-        console.log('работает');
 
-        // load(url).then(response => {
             this.setState({
                 users: data,
             });
@@ -82,15 +69,15 @@ class App extends Component {
 
     _onDataChange(){
         //Выбираем другой набор данных и подгружаем его
-        if (this.state.data===data1){
+        if (this.state.users===data1){
             this.setState({
-                data: data2,
+                users: data2,
             });
             this.loadData(data2);
 
         }else{
             this.setState({
-                data: data1,
+                users: data1,
             });
             this.loadData(data1);
 

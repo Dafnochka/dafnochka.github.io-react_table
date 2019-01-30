@@ -26,7 +26,7 @@ class DataGridPager extends Component {
     }
 
     render() {
-        const currentPage = this.props.currentPage;
+        const currentPage = this.props.currentPage<=this.props.pagesCount? this.props.currentPage: this.props.pagesCount-1;
         const pagesCount = this.props.pagesCount;
 
         const pagesBeforeCount = Math.min(
