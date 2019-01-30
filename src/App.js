@@ -1,14 +1,13 @@
 import React, {Component} from 'react';
-import memoize from 'memoize-one';
 import {DataGrid} from './components/DataGrid.js';
 import {UserDetails} from './components/UserDetails.js';
 import {ChangeData} from "./components/ChangeData";
-import load from './utils/load';
-
+import data1 from './data/packageSmall';
+import data2 from './data/packageBig';
 
 // импортируем данные для загрузки
-const DATA_URL1 = 'http://www.filltext.com/?rows=32&id={number|10000000}&firstName={firstName}&lastName={lastName}&email={email}&phone={phone|(xxx)xxx-xx-xx}&address={addressObject}&description={lorem|32}';
-const DATA_URL2 = 'http://www.filltext.com/?rows=1000&id={number|100000}&firstName={firstName}&delay=3&lastName={lastName}&email={email}&phone={phone|(xxx)xxx-xx-xx}&address={addressObject}&description={lorem|32}';
+// const DATA_URL1 = 'http://www.filltext.com/?rows=32&id={number|10000000}&firstName={firstName}&lastName={lastName}&email={email}&phone={phone|(xxx)xxx-xx-xx}&address={addressObject}&description={lorem|32}';
+// const DATA_URL2 = 'http://www.filltext.com/?rows=1000&id={number|100000}&firstName={firstName}&delay=3&lastName={lastName}&email={email}&phone={phone|(xxx)xxx-xx-xx}&address={addressObject}&description={lorem|32}';
 
 
 // Файлы для тестирование оффлайн
@@ -20,54 +19,51 @@ const DATA_URL2 = 'http://www.filltext.com/?rows=1000&id={number|100000}&firstNa
 class App extends Component {
     constructor(props) {
         super(props);
+        const users = data1;
+        const columns = [
+            {key: 'id', label: 'Id', formatter: row => row.id},
+            {key: 'firstName', label: 'First name', formatter: row => row.firstName},
+            {key: 'lastName', label: 'Last name', formatter: row => row.lastName},
+            {key: 'email', label: 'E-mail', formatter: row => row.email},
+            {key: 'phone', label: 'Phone', formatter: row => row.phone},
+            {
+                key: 'address',
+                label: 'Address',
+                formatter: row => row.address.state + ', ' +
+                    row.address.city + ', ' +
+                    row.address.streetAddress + ', ' +
+                    row.address.zip
+            },
+            {key: 'description', label: 'Description', formatter: row => row.description},
+        ];
 
         this.state = {
             activeUser: null,
-            columns: [],
-            url: DATA_URL1,
-            users: [],
+            users: users,
+            columns: columns,
         };
-
-        this.loadData();
     }
 
 
-    loadData(url) {
+    loadData(data) {
         //Загружаем данные по ссылке
-        if(!url){
+        if(!data){
             //Если ссылку не передали, берем ссылку из свойств
-            url=this.state.url;
+            data=this.state.users;
         }
         //Включаем индикатор загрузки
         document.querySelector("body").setAttribute('class','load');
         // Загружаем данные
-        return load(url).then(response => {
-            const users = JSON.parse(response);
-            const columns = [
-                {key: 'id', label: 'Id', formatter: row => row.id},
-                {key: 'firstName', label: 'First name', formatter: row => row.firstName},
-                {key: 'lastName', label: 'Last name', formatter: row => row.lastName},
-                {key: 'email', label: 'E-mail', formatter: row => row.email},
-                {key: 'phone', label: 'Phone', formatter: row => row.phone},
-                {
-                    key: 'address',
-                    label: 'Address',
-                    formatter: row => row.address.state + ', ' +
-                        row.address.city + ', ' +
-                        row.address.streetAddress + ', ' +
-                        row.address.zip
-                },
-                {key: 'description', label: 'Description', formatter: row => row.description},
-            ];
+        console.log('работает');
 
+        // load(url).then(response => {
             this.setState({
-                users: users,
-                columns: columns,
+                users: data,
             });
             // Выкоючаем индикатор загрузки
             document.querySelector("body").setAttribute('class','');
 
-        });
+        // });
     }
 
     _onSearchFieldInput(e) {
@@ -86,17 +82,17 @@ class App extends Component {
 
     _onDataChange(){
         //Выбираем другой набор данных и подгружаем его
-        if (this.state.url===DATA_URL1){
+        if (this.state.data===data1){
             this.setState({
-                url: DATA_URL2,
+                data: data2,
             });
-            this.loadData(DATA_URL2);
+            this.loadData(data2);
 
         }else{
             this.setState({
-                url: DATA_URL1,
+                data: data1,
             });
-            this.loadData(DATA_URL1);
+            this.loadData(data1);
 
         }
     }

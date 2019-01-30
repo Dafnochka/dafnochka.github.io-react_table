@@ -6,15 +6,15 @@ class UserDetails extends Component {
 
         return (
             <div>
-                <p>Выбран пользователь <b>{user.firstName} {user.lastName} </b></p>
-                <p>Описание:
+                <div>Выбран пользователь <b>{user.firstName} {user.lastName} </b></div>
+                <div>Описание:
                     <br/>
                     <div >{user.description}</div>
-                </p>
-                <p>Адрес проживания: <b>{user.address.streetAddress}</b></p>
-                <p>Город <b>{user.address.city} </b></p>
-                <p>Провинция/штат <b>{user.address.state} </b></p>
-                <p>Индекс <b>{user.address.zip} </b></p>
+                </div>
+                <div>Адрес проживания: <b>{user.address.streetAddress}</b></div>
+                <div>Город <b>{user.address.city} </b></div>
+                <div>Провинция/штат <b>{user.address.state} </b></div>
+                <div>Индекс <b>{user.address.zip} </b></div>
             </div>
         )
     }
